@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="img/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Residents</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+
+        /* Background image */
+        body {
+           background-color: #264346;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header styling */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #537c6a;
+        }
+
+        /* Logo styling */
+        header img {
+            width: 120px;
+            height: 80px;
+            mix-blend-mode: color-burn;
+        }
+
+        /* Navbar styling */
+        .navmenu {
+            list-style: none;
+            display: flex;
+            margin-left: auto;
+            gap: 20px;
+        }
+
+        .navmenu li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        /* Hover effect */
+        .navmenu li a:hover {
+            background-color: #ddd;
+        }
+
+        /* Main content styling */
+
+        section {
+            margin-bottom: 2px;
+            border-radius: 5px;
+        }
+
+        /* Home Section styling */
+      
+        #home {
+            background-image: url(img/luminaProp.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            padding: 500px;
+        }
+
+        #home p{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: 35px;
+            
+        }
+
+        /*Overview styling*/
+
+        #overview {
+            padding: 20px;
+            background-color: #f9f9f9; /* Optional: Add a background color for clarity */
+            text-align: center;
+        }
+
+        .overview-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
+            gap: 20px; /* Space between items */
+        }
+
+        .overview-item {
+            flex: 1 1 calc(25% - 20px); /* Make each image take 25% of the row minus the gap */
+            max-width: calc(25% - 20px); /* Ensure consistent width */
+            box-sizing: border-box;
+        }
+
+        .overview-item img {
+            width: 100%; /* Make the images responsive */
+            height: auto; /* Maintain the aspect ratio */
+            border-radius: 8px; /* Optional: Add rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for aesthetics */
+        }
+
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px; /* Optional: Rounded corners */
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /*floorplan styling*/
+        #floorplan {
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .floor-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .floor-container h3 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            color: #537c6a;
+        }
+
+        /* Grid layout for images */
+        .floor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        /* Styling for images */
+        .floor-grid a img {
+            width: 195px; /* Set fixed size for thumbnails */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Hover effect for thumbnails */
+        .floor-grid a img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /*About Us Styling*/
+        #aboutus {
+            padding: 20px;
+            background-color: #a57136; /* Optional background */
+            text-align: center;
+        }
+
+        /* Grid Layout */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust for "writable" size */
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Image Styling for "Writable" Size */
+        .about-grid img {
+            width: 300px; /* Approximate writable size */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Hover Effect */
+        .about-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-grid p{
+            font-size: 22px;
+            font-family:Georgia, 'Times New Roman', Times, serif;
+        }
+
+
+       
+        /*Mobile Responsive styling*/
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navmenu {
+                flex-direction: column;
+                gap: 10px;
+                margin-left: 0;
+            }
+
+            .navmenu li a {
+                padding: 10px;
+            }
+
+            #home {
+                padding: 200px 20px; /* Reduce padding for smaller screens */
+                background-size: cover;
+            }
+
+            .overview-container {
+                flex-direction: column;
+                gap: 10px; /* Smaller gap for mobile */
+            }
+
+            .overview-item {
+                flex: 1 1 100%;
+                max-width: 100%; /* Full width for mobile */
+            }
+
+            .floor-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slider {
+                height: 50vh; /* Adjust slider height for smaller screens */
+            }
+
+            footer {
+                font-size: 14px; /* Adjust text size for footer */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header img {
+                width: 100px; /* Smaller logo for mobile */
+                height: 60px;
+            }
+
+            .navmenu li a {
+                font-size: 14px;
+            }
+
+            .floor-grid a img {
+                width: 100px; /* Adjust image sizes for mobile */
+            }
+
+            #home p {
+                font-size: 24px; /* Reduce text size for mobile */
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+        }
+            
+
+        /* Slider styling */
+        .container {
+            width: 100%;
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .slider {
+            height: 80vh; /* Adjust as needed */
+            width: 100%; /* Full width */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden; /* Hide anything outside the slider area */
+        }
+
+        /* Ensure slides are properly visible */
+        .slider div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Match the slider's width */
+            height: 100%; /* Match the slider's height */
+
+            background-size: flex; /* Scale images to cover the entire slide */
+            border-radius: 0; /* Optional: No rounded corners */
+            transition: all 1s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* Smooth animation */
+        }
+
+        .box1 { background: url('img/info1.png') no-repeat center ; background-size: contain; }
+        .box2 { background: url('img/info2.png') no-repeat center ; background-size: contain;}
+        .box3 { background: url('img/info3.png') no-repeat center ; background-size: contain; }
+        .box4 { background: url('img/info4.png') no-repeat center ; background-size: contain;}
+       
+
+
+        /* Footer Styling */
+        footer {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }   
+
+        footer p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        footer a img {
+            vertical-align: middle;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Image with image map -->
+        <img src="img/logo.png" alt="Lumina Logo" usemap="#logoMap" width="120" height="80">
+        <map name="logoMap">
+            <area shape="rect" coords="40,0,80,80" href="home.html" alt="Home">
+        </map>
+        
+        <!-- Navigation menu -->
+        <ul class="navmenu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#about">About Us</a></li>
+        </ul>
+    </header>
+    <main>
+        <!-- Home Section -->
+        <section id="home">
+        </section>
+
+        <section id="vid">
+            <video
+                class="video-stream html5-main-video"
+                controls
+                autoplay
+                loop
+                muted
+                style="width: 100%; max-height: 80vh;"
+            >
+                <source src="video/BSG Lumina Residence Building 3.mp4 " type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </section>
+        <!-- Slider Section -->
+        <section class="container">
+            <div class="slider">
+                <div class="box1"></div>
+                <div class="box2"></div>
+                <div class="box3"></div>
+                <div class="box4"></div>
+            </div>
+        </section>
+
+
+        <!--Overview section-->
+        <section id="overview">
+            <h2>Overview</h2>
+            <div class="overview-container">
+                <div class="overview-item">
+                    <a href="img/overview1.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview1.png" alt="Overview 1">
+                    </a>
+                </div>
+                <div class="overview-item">
+                    <a href="img/overview2.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview2.png" alt="Overview 2">
+                    </a>
+                </div>
+                <div class="overview-item">
+                    <a href="img/overview3.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview3.png" alt="Overview 3">
+                    </a>
+                </div>
+                <div class="overview-item">
+                    <a href="img/overview4.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview4.png" alt="Overview 4">
+                    </a>
+                </div>
+                <div class="overview-item">
+                    <a href="img/overview5.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview5.png" alt="Overview 3">
+                    </a>
+                </div>
+                <div class="overview-item">
+                    <a href="img/overview6.png" target="_blank" class="lightbox-trigger">
+                        <img src="img/overview6.png" alt="Overview 3">
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        
+        <!--FloorPlan section-->
+        <section id="floorplan">
+            <h2>Floor Design and Facilities</h2>
+            <div class="floor-container">
+                <h3>Facility usages on 9 & 10 floor</h3>
+                <div class="floor-grid">
+                    <a href="img/floor1.png" class="lightbox-trigger">
+                        <img src="img/floor1.png" alt="Floor1">
+                    </a>
+                    <a href="img/floor2.png" class="lightbox-trigger">
+                        <img src="img/floor2.png" alt="Floor2">
+                    </a>
+                </div>
+            </div>
+        
+            <div class="floor-container">
+                <h3>FloorPlan and Design</h3>
+                <div class="floor-grid">
+                    <a href="img/floorplan.png" class="lightbox-trigger">
+                        <img src="img/floorplan.png" alt="Floorplan">
+                    </a>
+                    <a href="img/plan1.png" class="lightbox-trigger">
+                        <img src="img/plan1.png" alt="Plan1">
+                    </a>
+                    <a href="img/plan2.png" class="lightbox-trigger">
+                        <img src="img/plan2.png" alt="Plan2">
+                    </a>
+                    <a href="img/plan2_1.png" class="lightbox-trigger">
+                        <img src="img/plan2_1.png" alt="Plan2_1">
+                    </a>
+                    <a href="img/plan3.png" class="lightbox-trigger">
+                        <img src="img/plan3.png" alt="Plan3">
+                    </a>
+                    <a href="img/plan4.png" class="lightbox-trigger">
+                        <img src="img/plan4.png" alt="Plan4">
+                    </a>
+                    <a href="img/plan4_1.png" class="lightbox-trigger">
+                        <img src="img/plan4_1.png" alt="Plan4_1">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- About us Section -->
+        <section id="aboutus">
+            <h2>About Us</h2>
+            <div class="about-grid">
+                <a href="img/accessibility.png" class="lightbox-trigger">
+                    <img src="img/accessibility.png" alt="Accessibility">
+                </a>
+                <a href="img/location.png" class="lightbox-trigger">
+                    <img src="img/location.png" alt="Location">
+                </a>
+                <a href="img/locationOverview.png" class="lightbox-trigger">
+                    <img src="img/locationOverview.png" alt="Location Overview">
+                </a>
+                <p>You can find us near GeorgeTown area for a look of our Lumina Residents with ease these are some information about our property. If there are anymore stuff you want to know of you can go down below of this webpage and contact them Thank you.</p>
+            </div>
+        </section>
+
+
+
+        <!-- Contact Us Section -->
+       
+    </main>
+
+    <!-- Footer section-->
+    <footer>
+    <p>&copy; 2023 Lumina Residents. All rights reserved.</p>
+    <p>Contact us on WhatsApp:</p>
+    <p>
+        <a href="https://wa.me/60164771238" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width="30" height="30">
+            +60 16-477 1238 Mr Jun (Property Agent)
+        </a>
+    </p>
+    <p>
+        <a href="https://wa.me/60164771238" target="_blank">
+            E-Brochure (Click here)
+        </a>
+    </p>
+</footer>
+
+
+    <!-- JS for Slider-->
+    <script>
+
+            document.addEventListener('DOMContentLoaded', () => {
+            const lightbox = document.createElement('div');
+            lightbox.classList.add('lightbox');
+            document.body.appendChild(lightbox);
+
+            const closeButton = document.createElement('span');
+            closeButton.classList.add('lightbox-close');
+            closeButton.innerHTML = '&times;';
+            lightbox.appendChild(closeButton);
+
+            const lightboxImage = document.createElement('img');
+            lightbox.appendChild(lightboxImage);
+
+            const lightboxTriggers = document.querySelectorAll('.lightbox-trigger');
+            lightboxTriggers.forEach(trigger => {
+                trigger.addEventListener('click', event => {
+                    event.preventDefault(); // Prevent default link behavior
+                    const imgSrc = trigger.getAttribute('href');
+                    lightboxImage.src = imgSrc;
+                    lightbox.style.display = 'flex'; // Show the lightbox
+                });
+            });
+
+            closeButton.addEventListener('click', () => {
+                lightbox.style.display = 'none'; // Hide the lightbox
+            });
+
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox) {
+                    lightbox.style.display = 'none'; // Hide when clicking outside the image
+                }
+            });
+        });
+
+
+
+
+            const slider = document.querySelector('.slider');
+            const slides = Array.from(slider.children).slice(0, 4); // Select only the first 4 slides
+            let currentIndex = 0;
+
+            function autoSlide() {
+                slides.forEach((slide, index) => {
+                    const offset = (index - currentIndex + slides.length) % slides.length;
+                    slide.style.transform = `translateX(${offset * 100}%)`;
+                });
+                currentIndex = (currentIndex + 1) % slides.length; // Loop within the 4 slides
+            }
+
+            // Initial setup for slides
+            slides.forEach((slide, index) => {
+                slide.style.position = 'absolute';
+                slide.style.width = '100%';
+                slide.style.height = '100%';
+                slide.style.transform = `translateX(${index * 100}%)`; // Arrange slides side by side
+            });
+
+            // Auto-slide every 3 seconds
+            setInterval(autoSlide, 3000);
+
+
+    </script>
+</body>
+</html>
